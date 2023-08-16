@@ -1,10 +1,11 @@
+import ast
 import os
 from pprint import pprint
 import requests
 from bs4 import BeautifulSoup
-from datetime import datetime
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
+
 
 spotify_id = os.environ.get("SPOT_CLIENT_ID")
 spotify_cs = os.environ.get("SPOT_CLIENT_SECRET")
@@ -37,3 +38,12 @@ sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=spotify_id,
 user = sp.current_user()
 user_id = user["id"]
 # print(user_id)
+
+with open("token.txt", "r") as file:
+    data = file.read()
+
+token_acc = ast.literal_eval(data)['access_token']
+
+sp = spotipy.Spotify(auth=token_acc)
+results = sp.search(q=song_test, type="track")
+pprint(results)
