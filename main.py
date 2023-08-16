@@ -20,6 +20,7 @@ soup = BeautifulSoup(hot_100_page, "html.parser")
 
 song_names_spans = soup.select("li ul li h3")
 song_names = [song.getText().strip() for song in song_names_spans]
+song_test = song_names[0]
 
 """Spotify Authentication"""
 sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=spotify_id,
@@ -35,4 +36,4 @@ sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=spotify_id,
                                                requests_timeout=None))
 user = sp.current_user()
 user_id = user["id"]
-print(user_id)
+# print(user_id)
