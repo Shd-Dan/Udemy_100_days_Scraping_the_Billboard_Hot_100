@@ -46,14 +46,15 @@ sp = spotipy.Spotify(auth=token_acc)
 
 # Getting URIs of songs
 URIs = []
+# Previously I did mistake in URI, my URIs were wrong.
 for name in song_names:
-    data = sp.search(q=name, type="track")
+    data = sp.search(q=f"track:{name} year:2001", type="track")
     try:
-        result = data['tracks']['items'][0]['album']['artists'][0]['uri']
-        URIs.append(result)
+        uri = data["tracks"]["items"][0]["uri"]
+        URIs.append(uri)
     except IndexError:
         print(f"{name} doesn't exist in Spotify. Skipped.")
-print(URIs)
+
 test_URI = ["3qwGe91Bz9K2T8jXTZ815W"]
 
 # New playlist in spotify
@@ -63,7 +64,8 @@ spotify_playlist = sp.user_playlist_create(user=user_id,
 
 
 # Adding list of songs to playlist
-sp.playlist_add_items(playlist_id=spotify_playlist['id'], items=test_URI)
+sp.playlist_add_items(playlist_id=spotify_playlist['id'], items=URIs)
+print('Done!')
 
 playlist_address = f"https://open.spotify.com/playlist/{spotify_playlist['id']}"
 print(playlist_address)
